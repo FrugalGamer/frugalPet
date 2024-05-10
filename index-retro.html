@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+	<head>
+		<title>frugalGotchi</title>
+
+		<link href="style-retro.css" type="text/css" rel="stylesheet">
+		<meta charset="UTF-8">
+	</head>
+
+	<body onload="init()">
+		<div id="container">
+			<aside id="notes">
+				<p>Take care of a little virtual dude and make sure it doesn't die. There may be other things to do with it in the future as well.</p>
+
+				<div id="debug"></div>
+				<div id="extranotes">
+					<h2>TO DO</h2>
+					<ul class="todo">
+						<li><strike>Meters still tick down after death. Need to make all of them stop completely</strike></li>
+						<li>Collapse all exercise buttons into one that goes to a menu. That way different icons can be added for more functionality.</li>
+						<li><strike>Pause button doesn't stop age counter</strike> - 4/28/24</li>
+						<li>Change Play button to play a game instead of exercising</li>
+						<li><strike>Wake button doesn't work</strike></li>
+						<li><strike>Game speed doesn't work</strike> - I think I'm just leaving this out for now</li>
+						<li><strike>To do: Add different types of meals</strike></li>
+						<li><strike>Add consequences for energy getting low</strike></li>
+						<li><strike>Health doesn't do anything yet. Will be implemented when I add snacks</strike></li>
+						<li><strike>Play should increase health and lower energy. Also maybe increase physical.</strike></li>
+						<li><strike>Add training for different skills</strike></li>
+						<li><strike>Sleeping should make other meters go down slower</strike></li>
+						<li><strike>Dude should have different thoughts depending on what his meters say and what you're doing</strike></li>
+						<li><strike>Animations that are triggered by buttons still work after death. Need to fix</strike></li>
+						<li><strike>Separate ASCII animations completely from functions so that they all reside in the screen object</strike></li>
+						<li><strike>Need to complete animations for all training exercises</strike></li>
+						<li><strike>Make animation for "no"</strike> and make the dude use it when it's already at full meters</li>
+						<li><strike>Exercise doesn't have an animation</strike></li>
+						<li>Want to implement: weight and weather mechanics, job, gardening, marriage</li>
+						<li>Longterm: different life stages, which change depending on care. After that I can create achievements</li>
+						<li>Make each window draggable with a menubar, so that users can arrange them as they like</li>
+						<li>Make idle moving stop when playing other animations</li>
+					</ul>
+				</div>
+			</aside>
+
+			<main>
+				<h1><span id="name1">Your dude's name</span>, Age <span id="dudeAge"></span></h1>
+				<div id="miscControls">
+					<input type="button" value="Change Name" id="changeName" onClick="toggleWindow('modalWindow')"> <input type="button" value="⏸️ Pause" id="pauseButton" onClick="pause()"> <input type="button" value="📗 New" id="newButton" onClick="toggleWindow('modalNewWindow')"> <input type="button" value="💾 Save" id="saveButton" onClick="savePetToLocal()"> <input type="button" value="💾 Export" id="exportButton" onClick="savePetToFile()"> <input type="button" value="📂 Load" id="loadButton" onClick="toggleWindow('modalLoadWindow')">
+				</div>
+
+				<div id="statsTables">
+					<table>
+						<tr>
+							<th>Mood</th>
+							<th>Hunger</th>
+							<th>Energy</th>
+							<th>Hygiene</th>
+							<th>Health</th>
+						</tr>
+						<tr>
+							<td id="mood">Happy</td>
+							<td id="hunger">Fine</td>
+							<td id="energy">100%</td>
+							<td id="hygiene">Clean</td>
+							<td id="health">Healthy</td>
+						</tr>
+					</table>
+					<hr>
+
+					<table>
+						<tr>
+							<th>Logic</th>
+							<th>Social</th>
+							<th>Physical</th>
+							<th>Reading</th>
+						</tr>
+						<tr>
+							<td id="logic">0</td>
+							<td id="social">0</td>
+							<td id="physical">0</td>
+							<td id="reading">0</td>
+						</tr>
+					</table>
+				</div>
+
+				<div id="screen">
+					<div id="menuTop" class="lcdMenus">
+						<input type="button" value="Feed " id="feedButton-icon" onClick="screen.showMenu('Meal','Snack', feedMe)"> 
+						<input type="button" value="Play" id="playButton-icon" onClick="screen.showMenu('Guess','Jump', playWithMe)">
+						<input type="button" value="Clean" id="cleanButton-icon" onClick="cleanMe()">
+						<input type="button" value="Sleep" id="sleepButton-icon" onClick="putToBed()">
+					</div>
+					<div id="pet">
+						<img src='images/dude_default.png' alt='dude' id='petSprite' style='margin-left: 0px;'>
+					</div>
+					<div id="menuBottom" class="lcdMenus">
+						<input type="button" value="Chess" id="chessButton-icon" onclick="train('chess')">
+						<input type="button" value="Speech" id="speechButton-icon" onclick="train('speech')">
+						<input type="button" value="Exercise" id="exerciseButton-icon" onclick="train('exercise')"> 
+						<input type="button" value="Read" id="readButton-icon" onclick="train('read')">
+					</div>
+				</div>
+
+				<div id="controls">
+					<ul>
+						<li><a href="#" id="left" onclick="buttonNavigation('left')"><<</a></li>
+						<li><a href="#" id="enter" onclick="buttonNavigation('enter')">Enter</a></li>
+						<li><a href="#" id="right" onclick="buttonNavigation('right')">>></a></li>
+					</ul>
+				</div>
+
+				<div id="statusWindow">
+					<h3>Currently thinking</h3>
+					<span id="statusText">Everything is fine</span>
+				</div>
+			</main>
+		</div>
+
+		<div id="modalWindow" style="display: none;" class="modal">
+			What would you like to name your dude?<br>
+			<input type="text" id="changeName-input"> <input type="submit" onClick="submitName()" id="changeName-submit">
+		</div>
+
+		<div id="modalLoadWindow" style="display: none;" class="modal">
+			Please select save file<br>
+			<input type="file" id="savegame-input"> <input type="button" onClick="loadPetFromFile('savegame-input')" id="savegame-submit" value="Load">
+		</div>
+
+		<div id="modalNewWindow" style="display: none;" class="modal">
+			Are you sure? Your current pet will be erased!<br>
+			<input type="button" onClick="newPet()" id="newPet-confirm" value="Yes"> <input type="button" onClick="toggleWindow('modalNewWindow')" id="newPet-deny" value="Nevermind">
+		</div>
+	</body>
+
+	<script src="brain-retro.js"></script>
+	<script src="debug.js"></script>
+	<script src="thoughts.js"></script>
+	<script src="saveload.js"></script>
+</html>

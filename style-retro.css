@@ -1,0 +1,154 @@
+@font-face {
+	font-family: "Pixel Highscore";
+	src: url("fonts/pixel-highscore.ttf");
+	display: swap;
+}
+@font-face {
+	font-family: DynaPuff;
+	src: url("fonts/DynaPuff-VariableFont_wdth,wght.ttf");
+}
+
+body {
+	background-color: #1d2b53;
+	color: #c2c3c7;
+	font-family: sans-serif;
+}
+h1, h2, h3 { color: #ff87ad; font-family: DynaPuff; }
+input[type=button], input[type=submit], button {
+	padding: 0.5em;
+	border: 1px solid #c2c3c7;
+	border-radius: 8px;
+	background-color: #1d2b53;
+	color: #c2c3c7;
+	font-weight: bold;
+}
+	input[type=button]:hover, button:hover {
+		background-color: #c2c3c7;
+		color: #1d2b53;
+		cursor: pointer;
+	}
+input[type="text"] {
+	padding: 0.5em;
+	border: 1px solid #c2c3c7;
+	border-radius: 8px;
+	background-color: #f8e574;
+	color: #1d2b53;
+	font-weight: bold;
+}
+.todo li { color: #b37272; }
+.todo strike { color: #72b389; }
+#container {
+	display: grid;
+	grid-template-areas: "notes main extra";
+	grid-gap: 1em;
+	grid-template-columns: 30%;
+}
+main {
+	max-width: 600px;
+	grid-area: main;
+}
+#miscControls { margin-bottom: 1em; }
+#foodChoices { 
+	position: absolute;
+	padding: 1em;
+	box-shadow: 3px 3px 5px #0b1430;
+	background-color: #414d70;
+	border-radius: 16px;
+}
+#statusWindow, #statsTables {
+	background-image: url("images/lcd_bg.png");
+	text-align: center;
+	max-width: 474px;
+	padding: 0.5em 0;
+	color: #000;
+	font-family: "Pixel Highscore", monospace;
+	border: 4px solid #585858;
+	box-shadow: 0px 0px 8px #1a1a1a;
+}
+	#statusWindow { height: 100px; }
+	#statsTables th { font-size: 0.8em; }
+#statusWindow h3 { font-family: DynaPuff; color: #33263a; margin: 0 0 1em 0; }
+	#statusText {
+		font-style: italic;
+	}
+#screen {
+	display: block;
+	max-width: 474px;
+	min-height: 418px;
+	margin: auto;
+	font-family: "Pixel Highscore", monospace;
+	margin: 1em 0;
+	border: 4px solid #585858;
+	box-shadow: 0px 0px 8px #1a1a1a;
+	background: url("images/lcd_bg_large.png");
+}
+	#screen #screenMenu {
+		font-family: "Pixel Highscore", monospace;
+		font-size: 3em;
+		text-align: left;
+		margin: auto;
+		width: 80%;
+		padding: 0.2em 0 0 0;
+		line-height: 2em;
+	}
+		#screenMenu a { text-decoration: none; color: #000; }
+		#screenMenu a:hover::before { content: "🞂 "; }
+	#screen #pet { display: block; height: 220px; width: 100%; color: #1b1b1b; text-shadow: 2px 2px 4px #353535; font-weight: bold; text-align: center; }
+		#screen #pet img { height: 100%; }
+	.lcdMenus { display: block; height: 80px; width: 100%; text-align: center; padding: 15px 0 0 0; }
+		.lcdMenus input { height: 60px; min-width: 60px; background: none; border: 0px; background-repeat: no-repeat; background-size: cover; text-indent: -9999px; overflow: hidden; margin-right: 15px; }
+			.lcdMenus input:hover { background-color: transparent; }
+	/* Top menu buttons */
+		#feedButton-icon { background-image: url("images/menu-meal-off.png"); width: 80px; }
+			#feedButton-icon:hover, #feedButton-icon.selected { background-image: url("images/menu-meal-on.png"); }
+		#playButton-icon { background-image: url("images/menu-play-off.png"); width: 60px; }
+			#playButton-icon:hover, #playButton-icon.selected { background-image: url("images/menu-play-on.png"); }
+		#cleanButton-icon { background-image: url("images/menu-shower-off.png"); width: 60px; }
+			#cleanButton-icon:hover, #cleanButton-icon.selected { background-image: url("images/menu-shower-on.png"); }
+		#sleepButton-icon { background-image: url("images/menu-bed-off.png"); width: 100px; }
+			#sleepButton-icon:hover, #sleepButton-icon.selected { background-image: url("images/menu-bed-on.png"); }
+	/* Bottom menu buttons */
+		#chessButton-icon { background-image: url("images/menu-chess-off.png"); width: 45px; }
+			#chessButton-icon:hover, #chessButton-icon.selected { background-image: url("images/menu-chess-on.png"); }
+		#speechButton-icon { background-image: url("images/menu-talk-off.png"); width: 80px; }
+			#speechButton-icon:hover, #speechButton-icon.selected { background-image: url("images/menu-talk-on.png"); }
+		#exerciseButton-icon { background-image: url("images/menu-weight-off.png"); width: 60px; }
+			#exerciseButton-icon:hover, #exerciseButton-icon.selected { background-image: url("images/menu-weight-on.png"); }
+		#readButton-icon { background-image: url("images/menu-read-off.png"); width: 80px; }
+			#readButton-icon:hover, #readButton-icon.selected { background-image: url("images/menu-read-on.png"); }
+
+#speedDisplay {
+	width: 1em;
+}
+
+#controls { width: 474px; }
+	#controls ul { width: 250px; margin: auto; }
+		#controls ul li {
+			display: inline-block;
+			list-style-type: none;
+		}
+			#controls ul li a { display: block; background-repeat: no-repeat; text-indent: 9999px; overflow: hidden; }
+				#left { background-image: url("images/button_left_off.png"); width: 70px; height: 70px; }
+				#enter { background-image: url("images/button_enter_off.png"); width: 70px; height: 70px; }
+				#right { background-image: url("images/button_right_off.png"); width: 70px; height: 70px; }
+
+.modal {
+	position: absolute;
+	left: 40%;
+	top: 40%;
+	padding: 1em;
+	background-color: #1d2b53;
+	box-shadow: 1px 1px 4px #413c3c;
+	border-radius: 16px;
+}
+#debug { grid-area: notes; }
+#notes {
+	grid-area: notes;
+}
+#extranotes {
+	max-height: 400px;
+	overflow: scroll;
+}
+
+/* =================Debug================= */
+#debug #changeThought { width: 40px; }

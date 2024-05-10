@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+	<head>
+		<title>Simulation Experiment</title>
+
+		<link href="style.css" type="text/css" rel="stylesheet">
+	</head>
+
+	<body onload="init()">
+		<div id="container">
+			<aside id="debug">
+			</aside>
+
+			<main>
+				<p>Take care of a little ASCII dude and make sure it doesn't die. There may be other things to do with it in the future as well.</p>
+
+				<h1 id="name1">Your dude's name</h1><input type="button" value="Change Name" id="changeName" onClick="toggleWindow('modalWindow')">
+					<div id="modalWindow" style="display: none;">
+						What would you like to name your dude?<br>
+						<input type="text" id="changeName-input"> <input type="submit" onClick="submitName()" id="changeName-submit">
+					</div>
+
+				<div id="controls">
+					<input type="button" value="🍚 Feed V" id="feedButton" onClick="toggleWindow('foodChoices')"> 
+						<div id="foodChoices" style="display: none;"><input type="button" value="🥪 Meal" id="mealButton" onClick="feedMe('meal')"> <input type="button" value="🍪 Snack" id="snackButton" onClick="feedMe('snack')"></div>
+					<input type="button" value="🎲 Play" id="playButton" onClick="playWithMe()">
+					<input type="button" value="🛁 Clean" id="cleanButton" onClick="cleanMe()">
+					<input type="button" value="🛏️ Sleep" id="sleepButton" onClick="putToBed()"><br>
+					<b>🕜 Game speed: </b> <input type="button" value="<" onClick="changeSpeed(-1)" id="speedSlower"> <input type="text" value="1" id="speedDisplay"> <input type="button" value=">" onClick="changeSpeed(1)" id="speedFaster">
+					<input type="button" value="⏸️ Pause" id="pauseButton" onClick="pause()"><br>
+					<h3>Training</h3>
+					<input type="button" value="♟️ Play chess" id="chessButton" onclick="train('chess')"> <input type="button" value="💬 Practice Speech" id="speechButton" onclick="train('speech')"> <input type="button" value="⚽ Exercise" id="exerciseButton" onclick="train('exercise')"> <input type="button" value="📚 Read Book" id="readButton" onclick="train('read')">
+				</div>
+
+				<div id="statusWindow">
+					<h3>Currently thinking</h3>
+					<span id="statusText">Everything is fine</span>
+				</div>
+
+				<div id="screen">
+					<div id="menuTop" class="lcdMenus">
+						<input type="button" value="Feed " id="feedButton-icon" onClick="toggleWindow('foodChoices')"> 
+						<input type="button" value="Play" id="playButton-icon" onClick="playWithMe()">
+						<input type="button" value="Clean" id="cleanButton-icon" onClick="cleanMe()">
+						<input type="button" value="Sleep" id="sleepButton-icon" onClick="putToBed()">
+					</div>
+					<div id="pet">
+						&nbsp;0<br>
+						/|\<br>
+					 	&nbsp;|<br>
+						/&nbsp;\
+					</div>
+					<div id="menuBottom" class="lcdMenus">
+						<input type="button" value="Chess" id="chessButton" onclick="train('chess')"> <input type="button" value="Speech" id="speechButton" onclick="train('speech')"> <input type="button" value="Exercise" id="exerciseButton" onclick="train('exercise')"> <input type="button" value="Read" id="readButton" onclick="train('read')">
+					</div>
+				</div>
+				<table>
+					<tr>
+						<th>Mood</th>
+						<th>Hunger</th>
+						<th>Energy</th>
+						<th>Hygiene</th>
+						<th>Health</th>
+					</tr>
+					<tr>
+						<td id="mood">Happy</td>
+						<td id="hunger">Fine</td>
+						<td id="energy">100%</td>
+						<td id="hygiene">Clean</td>
+						<td id="health">Healthy</td>
+					</tr>
+				</table>
+
+				<table>
+					<tr>
+						<th>Logic</th>
+						<th>Social</th>
+						<th>Physical</th>
+						<th>Reading</th>
+					</tr>
+					<tr>
+						<td id="logic">0</td>
+						<td id="social">0</td>
+						<td id="physical">0</td>
+						<td id="reading">0</td>
+					</tr>
+				</table>
+
+				<p><b>Age:</b> <span id="dudeAge"></span></p>
+			</main>
+
+			<aside id="notes">
+				<h2>TO DO</h2>
+				<ul class="todo">
+					<li><strike>Wake button doesn't work</strike></li>
+					<li>Game speed doesn't work</li>
+					<li><strike>To do: Add different types of meals</strike></li>
+					<li><strike>Add consequences for energy getting low</strike></li>
+					<li><strike>Health doesn't do anything yet. Will be implemented when I add snacks</strike></li>
+					<li><strike>Play should increase health and lower energy. Also maybe increase physical.</strike></li>
+					<li>Add training for different skills</li>
+					<li>Sleeping should make other meters go down slower</li>
+					<li>Dude should have different thoughts depending on what his meters say <strike>and what you're doing</strike></li>
+					<li>Animations that are triggered by buttons still work after death. Need to fix</li>
+					<li>Separate ASCII animations completely from functions so that they all reside in the screen object</li>
+				</ul>
+			</aside>
+		</div>
+	</body>
+
+	<script src="brain.js"></script>
+	<script src="debug.js"></script>
+	<script src="thoughts.js"></script>
+</html>

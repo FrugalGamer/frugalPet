@@ -1,0 +1,85 @@
+@font-face {
+	font-family: PixelHighScore;
+	src: url("fonts/pixel-highscore.ttf");
+}
+@font-face {
+	font-family: DynaPuff;
+	src: url("fonts/DynaPuff-VariableFont_wdth,wght.ttf");
+}
+
+body {
+	background-color: #1d2b53;
+	color: #c2c3c7;
+	font-family: sans-serif;
+}
+h1, h2, h3 { color: #ff87ad; }
+	h1#name1 { font-family: DynaPuff; }
+input[type=button], input[type=submit], button {
+	padding: 0.5em;
+	border: 1px solid #c2c3c7;
+	border-radius: 8px;
+	background-color: #1d2b53;
+	color: #c2c3c7;
+	font-weight: bold;
+}
+	input[type=button]:hover, button:hover {
+		background-color: #c2c3c7;
+		color: #1d2b53;
+		cursor: pointer;
+	}
+input[type="text"] {
+	padding: 0.5em;
+	border: 1px solid #c2c3c7;
+	border-radius: 8px;
+	background-color: #f8e574;
+	color: #1d2b53;
+	font-weight: bold;
+}
+.todo li { color: #b37272; }
+.todo strike { color: #72b389; }
+#container {
+	display: grid;
+	grid-template-areas: "debug main notes";
+	grid-gap: 1em;
+	grid-template-columns: 30%;
+}
+main {
+	max-width: 600px;
+	margin: auto;
+	grid-area: main;
+}
+#foodChoices, #modalWindow { 
+	position: absolute;
+	padding: 1em;
+	box-shadow: 3px 3px 5px #0b1430;
+	background-color: #414d70;
+	border-radius: 16px;
+}
+#statusText {
+	font-style: italic;
+	font-family: monospace;
+}
+#screen {
+	display: block;
+	max-width: 231px;
+	min-height: 204px;
+	margin: auto;
+	font-family: "Courier", monospace;
+	margin: 1em 0;
+	border: 4px solid #585858;
+	box-shadow: 0px 0px 8px #1a1a1a;
+	background: url("images/screen_bg_forest.png");
+}
+	#screen #pet { display: block; height: 121px; width: 100%; color: #1b1b1b; text-shadow: 2px 2px 4px #353535; font-weight: bold; }
+	.lcdMenus { display: block; height: 45px; width: 100%; }
+#speedDisplay {
+	width: 1em;
+}
+
+#modalWindow {
+	position: absolute;
+	padding: 1em;
+	background-color: #1d2b53;
+}
+#debug { grid-area: debug; }
+#notes { grid-area: notes; }
