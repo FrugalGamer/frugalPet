@@ -17,6 +17,7 @@ let reading = { "current": 0 };
 // These are used to modify how quickly our stats count down. BIGGER numbers mean they tick down SLOWER
 let gameSpeed = 1;
 let pauseGame = false;
+let idle = true;
 let moodMultiplier = 1;
 let hungerMultiplier = 6;
 let energyMultiplier = 8;
@@ -145,6 +146,7 @@ function submitName(){
 	let nameTag = document.getElementById('name1');
 	document.body.style.backgroundImage = "";
 	screen.setDefault();
+	idle = true;
 	
 	// This is a silly easter egg
 	if(userInput == "Frank"){
@@ -167,6 +169,7 @@ let screen = {
 	viewport: document.querySelector("#screen #pet"),
 
 	setDefault: function() {
+		idle = true;
 		// this should eventually be changed to a "call stack" type function, so that I can go back to whatever the previous animation was before changing it
 		screen.viewport.innerHTML = "<img src='images/dude_default.png' alt='dude' id='petSprite' style='margin-left: 0px;'>";
 	},
@@ -203,17 +206,21 @@ let screen = {
 
 	// Note for later: these should all be changed to only supply the image path, and the object should set the innerHTML separately. This way all animations will stay in the same place on the screen that they were before.
 	setEating: function() {
+		idle = false;
 		screen.viewport.innerHTML = "<img src='images/dude_eating.png' alt='dude eating some pixels' id='petSprite'>";
 	},
 
 	setSleeping: function() {
+		idle = false;
 		screen.viewport.innerHTML = "<img src='images/dude_sleeping.png' alt='dude sleeping' id='petSprite'>";
 	},
 
 	setShower: function() {
+		idle = false;
 		screen.viewport.innerHTML = "<img src='images/dude_shower.png' alt='dude in a tub showering' id='petSprite'>"
 	},
 	setTraining: function(trainType) {
+		idle = false;
 		// The only thing I change here is the filename, so I'm using a switch case to figure out which type of exercise we want to show.
 		let filename = "";
 		switch(trainType){
@@ -232,11 +239,13 @@ let screen = {
 		return;
 	},
 	setDeath: function(){
+		idle = false;
 		screen.viewport.innerHTML = "<img src='images/dude_dead.png' alt='Tombstone' id='petSprite'>";
 		return;
 	},
 	// Did you know you can pass functions as parameters? I just learned you can!
 	showMenu: function(option1, option2, fnName) {
+		idle = false;
 		// I'm hiding the sprite right now because if I don't, the rest of my code freaks out trying to figure out where it went.
 		screen.viewport.innerHTML = "<img src='images/dude_default.png' alt='hidden' id='petSprite' style='display: none;'>";
 		screen.viewport.innerHTML += "<div id='screenMenu'><a href='#' class='screenText' id='screenText1'>" + sanitize(option1) + "</a><br><a href='#' class='screenText' id='screenText2'>" + sanitize(option2) + "</a></div>";
@@ -246,6 +255,10 @@ let screen = {
 		document.getElementById("screenText2").onclick = fnName;
 		return false;
 	},
+	setPlay_guess: function(state) {
+		idle = false;
+		screen.viewport.innerHTML = "<img src='images/dude_play_waiting.png' alt='Waiting for guess...' id='petSprite'>";	
+	}
 };
 
 // This counts down our various stats
@@ -313,22 +326,53 @@ function feedMe(input) {
 	}
 }
 
-// Simple play games function. This will grow later
-function playWithMe(input) {
-	// Convert the input to string first
-	console.log(input.children);
-	let gameType = String(input);
-	if(gameType == 'Guess'){
-		// Play the left/right game
-		let answer = Math.floor(Math.random()+0.5);
-		console.log(answer);
+// This is the code that shows the menu for the games
+	function playWithMe(input) {
+		// Grab the link we clicked on
+		let gameType = this.innerText;
+		if(gameType == 'Guess'){
+			games.setPlay_guess();
+		}
+		else if(gameType == "Jump"){
+			// Play the jump game
+		}
+		else
+			return 0;
+	}
 
+let games = {
+	// This is for waiting for asynchronous user reactions to the games
+	userInput: new Promise(
+		(resolve) => {
+			console.log("Test");
+			}
+		),
+
+	setPlay_guess: function(){
+		// Set the waiting screen animation
+		screen.setPlay_guess();
+
+		console.log(document.querySelector("#controls #left"));
+
+		const promise = games.chooseGuess("left");
+		// Add event listeners to the controls for the left/right choices
+		document.querySelector("#controls #left").addeventlistener("click", promise);
+	},
+
+	chooseGuess: function(input){
+		// Randomly choose left/right
+		let answer = Math.floor(Math.random()+0.5); 
+
+		// Promise needs to go here
+		return new Promise(function(resolve, reject) {
+			//Stuff here
+			
+		})
+	},
+
+	setPlay_jump: function(){
+		// Jump game code goes here
 	}
-	else if(gameType == "Jump"){
-		// Play the jump game
-	}
-	else
-		return 0;
 }
 
 // Showering function
@@ -442,7 +486,7 @@ function train(discipline) {
 function changeSpeed(speed) {
 
 	if(typeof(speed) == "number"){
-		// If our numbers ever get to 0, the dude dies, we we just prevent gameSpeed from every becoming 0
+		// If our numbers ever get to 0, the dude dies, so we just prevent gameSpeed from ever becoming 0
 		if(gameSpeed + speed == 0)
 			gameSpeed = 1;
 		else
@@ -578,8 +622,8 @@ function gameLoop(){
 	readingTag.innerText = Math.round(reading.current);
 
 	checkStatus();
-	// Only show idle animation if we're not doing any of the three below things
-	if(!(eating || sleeping || showering))
+	// Only show idle animation if we haven't tripped the idle variable. This gets set every time we start a new activity
+	if(idle == true)
 		screen.setIdle();
 
 	// Death scenario - this will break the game loop and the game is over

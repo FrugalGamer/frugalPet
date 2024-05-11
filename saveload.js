@@ -78,7 +78,6 @@ function loadPetFromFile(elm) {
 function loadPetFromLocal() {
 	let pet = { ...localStorage };
 	
-	console.log(pet.age);
 	document.querySelector("#name1").innerText = pet.name;
 	age.current = parseFloat(pet.age);
 	hunger.current = pet.hunger;
